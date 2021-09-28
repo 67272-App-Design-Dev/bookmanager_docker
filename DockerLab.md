@@ -3,7 +3,7 @@
 
 1. Install Docker Desktop on your local machine by following the instructions for your respective operating system [here](https://docs.docker.com/get-docker/).
 2. Install PostgreSQL if you do not already have it [here](https://www.postgresql.org/download/)
-3. Clone or create Rails project (Still undecided) 
+3. Clone othe starting [repository](https://github.com/67272-App-Design-Dev/bookmanager_docker.git)
 
 
 ## Part 2: Docker Introduction 
@@ -20,12 +20,6 @@ In this diagram, Docker is the container engine.
 
 	``` 
 	FROM ubuntu:latest
-	# Configure the main working directory
-	RUN mkdir -p /BookManager
-	WORKDIR /BookManager
-	ADD . /BookManager
-	# Copy the Gemfile as well as the Gemfile.lock and install
-	COPY Gemfile Gemfile.lock ./
 	# Install some dependencies we need for Rails and PostgreSQL
 	RUN apt-get update && apt-get install nodejs postgresql-client -y
 	RUN apt-get install curl -y
@@ -35,33 +29,61 @@ In this diagram, Docker is the container engine.
 	SHELL [ "/bin/bash", "-l", "-c" ]
 	RUN . /etc/profile.d/rvm.sh
 	RUN rvm install ruby-2.5.7 && rvm use 2.5.7
+	``` 
+	
+	Read through the contents and comments in the file to understand how our image is being built. Docker can build images by reading instructions in this file. In the case above we are specifying a base linux image, installing some dependencies, and installing RVM to adjust our Ruby version.
+	
+3. Now lets create a Docker image by running `docker build -t bookmanager .` from our project's root directory. Observe that we are building a base image with the specifications in `Dockerfile`. Note that the `t` flag allows us to associate a name with our image. Verify the image was created by opening Docker dashboard and checking the images folder.
+
+4. Now lets start a container from the image we just created with the `docker run` command. Run the following: 
+
+	```
+	docker run --name bookmanager -dp --rm bookmanager
+	```
+	
+	Note that with the `d` flag we are running the container in "detached mode". The `rm` flag simply cleans up the container Docker is using after the container exits.
+	
+5. Go to the dashboard and enter the CLI for the container. Verify that our Ruby version is correct with `ruby --version`.
+
+6. Now we have container fit to our specifications to be able to run our app. Let's now add our app by adding it to the image used to build the container and running a new instance. Add the following to the end of `Dockerfile`:
+
+   ``` 
+   # Configure the main working directory
+	RUN mkdir -p /BookManager
+	WORKDIR /BookManager
+	ADD . /BookManager
+	# Copy the Gemfile as well as the Gemfile.lock and install
+	COPY Gemfile Gemfile.lock ./
 	# Update our gems with bundler 
 	RUN gem install bundler
 	RUN bundle install
+	RUN bundle exec rails db:reset
 	# Expose port 3000 to the Docker host, so we can access it
 	EXPOSE 3000
 	# The main command to run when the container starts
 	CMD /bin/bash -l -c "bundle exec rails server -b 0.0.0.0"
-	``` 
+   ```
 	
-	Read through the contents and comments in the file to understand how our image is being built. Docker can build images by reading instructions in this file.
-	
-3. Now lets create a Docker image by running `docker build -t bookmanager .` from our project's root directory. Observe that we are building a base image with the specifications in `Dockerfile`. Note that the `t` flag allows us to associate a name with our image. Verify the image was created by opening Docker dashboard and checking the images folder.
-4. Now lets start a container from the image we just created with the `docker run` command. Run the following: 
+	Note how we are copying adding our app and also running some additional 	commands like installing our gems and initializing the database. We also 	specify with the `CMD` key to start our Rails app when a container 	with our image launches.
+ 
+7. Let's stop the previous instance of the container from the dashboard or with the command `docker stop bookmanager`, and run the following to create a new instance: 
+ 
+   ```
+   docker run --name bookmanager -dp 3000:3000 --rm bookmanager
+   ```
+   
+	Note that we are now specifying the `p` flag which binds the container's 	port 3000 to our local machine's port 3000. Our container will run our Rails 	application on port 3000 and we want to be able to access it from our local 	machine.
+   
+8. Now verify that you can visit the application on your local computer at port 3000. Visit the authors page and add some entries.
 
-	```
-	docker run --name bookmanager -dp 3000:3000 --rm bookmanager
-	```
-	
-	Note that with the `d` flag we are running the container in "detached mode" or in the background and the `p` flag binds the container's port 3000 to our local machine's port 3000. Our container will run our Rails application on port 3000 and we want to be able to access it from our local machine. The `rm` flag simply cleans up the container Docker is using after the container exits.
+9. Stop the container instance and create another using the `docker build` command like before 
 
-5. Now verify that you can visit the application on your local computer at port 3000
-6. Stop the container instance by using the dashboard or command line with the command `docker stop bookmanager`
+10. Navigate to the books page and add some books for our authors made in the previous step
 
 
 ### Persisting our Database
 
-Each time we start a container the database is wiped clean. Containers get their own file space so any changes we make in one will not be seen in another. Though, there is a way to persist our data from one container to the next. Volumes give us the ability to connect a filesystem from our machine to the container so we can access the data after the container exits and possibly connect the same filesystem to our next container instance.
+Did you notice each time we start a container the new entries are wiped clean? Containers get their own file space so any changes we make in one will not be seen in another. Though, there is a way to persist our data from one container to the next. Volumes give us the ability to connect a filesystem from our machine to the container so we can access the data after the container exits and possibly connect the same filesystem to our next container instance.
 
 1. Create a new volume with the `docker volume create` command:
 
@@ -77,6 +99,7 @@ Each time we start a container the database is wiped clean. Containers get their
 	 docker run --name bookmanager -dp 3000:3000 \
 	 -v my-vol:/BookManager/db/ --rm bookmanager
 	 ```
+	 Note if you did not stop the container instance from the previous part you 	 will get an error since both container instances will attempt to bind to 	 our local port 3000 at the same time.
 	 
 3. Our volume is mounted to the `db` directory in our application. This is the default directory where our database is stored. Go ahead and add some items in the application. 
 4. Stop the container instance and relaunch another container instance with the same volume to see your data persist across launches!
@@ -84,11 +107,11 @@ Each time we start a container the database is wiped clean. Containers get their
 
 ### Using Bind Mounts
 
-In the last section, we used a named volume to persist our database between container runs. This is useful is we do not care about where our data is stored. If we do, then we can use [bind mounts](https://docs.docker.com/storage/bind-mounts/). This will allow us actually mount a local host directory into our container! This type of volume can be used to persist data but also to help speed up our development by mounting our source code and allowing the container to respond to changes immediately.
+In the last section, we used a named volume to persist our database between container runs. This is useful if we do not care about where our data is stored. If we do, then we can use [bind mounts](https://docs.docker.com/storage/bind-mounts/). This will allow us actually mount a local host directory into our container! This type of volume can be used to persist data but also to help speed up our development by mounting our source code and allowing the container to respond to changes immediately.
 	
 ![Image](https://imgur.com/LzRMA9k.png)
 
-Docker contianers can be configured with three different types of mounts. The main difference between bind mounts and volumes is that the user can specify the location of the filesystem on the local computer with a bind mount. tmpfs mounts are for linux users only and allow for the container to create files outside the container's writable layer. 
+Docker containers can be configured with three different types of mounts. The main difference between bind mounts and volumes is that the user can specify the location of the filesystem on the local computer with a bind mount. tmpfs mounts are for linux users only and allow for the container to create files outside the container's writable layer. 
 
 1. Lets create another instance of our container, but this time instead of using our volume we will bind our working directory on our local machine to the working directory of the Docker container. From the root of our app run:
 
@@ -96,10 +119,9 @@ Docker contianers can be configured with three different types of mounts. The ma
 	docker run --name bookmanager -dp 3000:3000 \
 	-v "$(pwd):/BookManager" --rm bookmanager
 	```
-	Note if you did not stop the container instance from the previous part you will get an error since both container instances will attempt to bind to our local port 3000 at the same time.
 	
 2. Go to the publishers page and add in some publishers. Notice how we do not have the option to show the individual publisher pages.
-3. Paste in the following contents to `index.html.erb` in our publishers folder below `publisher.name`: 
+3. Paste in the following contents to `index.html.erb` in our publishers folder below `<td><%= publisher.name %></td>`: 
 
 	```
 	<td><%= link_to 'Show', publisher %></td>
