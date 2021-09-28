@@ -1,0 +1,47 @@
+<%= form_for(book) do |f| %>
+  <% if book.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(book.errors.count, "error") %> prohibited this book from being saved:</h2>
+
+      <ul>
+      <% book.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :title %>
+    <%= f.text_field :title %>
+  </div>
+
+  <div class="field">
+    <%= f.label :publisher_id %>
+    <%= f.number_field :publisher_id %>
+  </div>
+
+  <div class="field">
+    <%= f.label :proposal_date %>
+    <%= f.date_select :proposal_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :contract_date %>
+    <%= f.date_select :contract_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :published_date %>
+    <%= f.date_select :published_date %>
+  </div>
+
+  <div class="field">
+    <%= f.label :units_sold %>
+    <%= f.number_field :units_sold %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
