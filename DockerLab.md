@@ -3,7 +3,8 @@
 
 1. Install Docker Desktop on your local machine by following the instructions for your respective operating system [here](https://docs.docker.com/get-docker/).
 2. Install PostgreSQL if you do not already have it [here](https://www.postgresql.org/download/)
-3. Clone othe starting [repository](https://github.com/67272-App-Design-Dev/bookmanager_docker.git)
+3. Clone the starting [repository](https://github.com/67272-App-Design-Dev/bookmanager_docker.git)
+4. Set up the project by installing our gems and seeding the database
 
 
 ## Part 2: Docker Introduction 
@@ -11,7 +12,7 @@
 [Docker](https://docs.docker.com/get-started/overview/) is a platform for developing, shipping, and running applications. Docker allows you to create containers which are environments fit to the specifications needed to run your apps. The platform allows you to run multiple containers simultaneously on a single operating system. The architecture differences between machine virtualizations and containers are highlighted in the following diagram.
 
 ![](https://imgur.com/kBBlpZl.png)
-In this diagram, Docker is the container engine.
+In this diagram, Docker is the container engine in blue.
 
 ### Docker Images and Containers
 
@@ -24,6 +25,7 @@ In this diagram, Docker is the container engine.
 	RUN apt-get update && apt-get install nodejs postgresql-client -y
 	RUN apt-get install curl -y
 	RUN apt-get install libpq-dev -y
+	RUN apt-get install git -y
 	# We download and use RVM on our VM to specify Ruby version 
 	RUN curl -sSL https://get.rvm.io | bash -s stable
 	SHELL [ "/bin/bash", "-l", "-c" ]
@@ -38,12 +40,12 @@ In this diagram, Docker is the container engine.
 4. Now lets start a container from the image we just created with the `docker run` command. Run the following: 
 
 	```
-	docker run --name bookmanager -dp --rm bookmanager
+	docker run --name bookmanager -it --rm bookmanager
 	```
 	
-	Note that with the `d` flag we are running the container in "detached mode". The `rm` flag simply cleans up the container Docker is using after the container exits.
+	Note that with the `i` and `t` flags we are running the container in "foreground mode". The `rm` flag simply cleans up the container Docker is using after the container exits.
 	
-5. Go to the dashboard and enter the CLI for the container. Verify that our Ruby version is correct with `ruby --version`.
+5. In the CLI for the container. Login to a bash shell with `bash -l`, and then verify that our Ruby version is correct with `ruby --version`.
 
 6. Now we have container fit to our specifications to be able to run our app. Let's now add our app by adding it to the image used to build the container and running a new instance. Add the following to the end of `Dockerfile`:
 
@@ -66,13 +68,13 @@ In this diagram, Docker is the container engine.
 	
 	Note how we are copying adding our app and also running some additional 	commands like installing our gems and initializing the database. We also 	specify with the `CMD` key to start our Rails app when a container 	with our image launches.
  
-7. Let's stop the previous instance of the container from the dashboard or with the command `docker stop bookmanager`, and run the following to create a new instance: 
+7. Now let's rebuild the image with `docker build -t bookmanager .`, stop the previous instance of the container from the dashboard or with the command `docker stop bookmanager`, and run the following to create a new instance: 
  
    ```
    docker run --name bookmanager -dp 3000:3000 --rm bookmanager
    ```
    
-	Note that we are now specifying the `p` flag which binds the container's 	port 3000 to our local machine's port 3000. Our container will run our Rails 	application on port 3000 and we want to be able to access it from our local 	machine.
+	Note that we are now specifying the `p` flag which binds the container's 	port 3000 to our local machine's port 3000. Our container will run our Rails 	application on port 3000 and we want to be able to access it from our local 	machine. We also specify the `d` flag to run our container in "detatched 	mode" or in the background.
    
 8. Now verify that you can visit the application on your local computer at port 3000. Visit the authors page and add some entries.
 
