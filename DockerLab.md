@@ -4,7 +4,7 @@
 1. Install Docker Desktop on your local machine by following the instructions for your respective operating system [here](https://docs.docker.com/get-docker/).
 2. Install PostgreSQL if you do not already have it [here](https://www.postgresql.org/download/)
 3. Clone the starting [repository](https://github.com/67272-App-Design-Dev/bookmanager_docker.git)
-4. Set up the project by installing our gems and seeding the database
+4. Set up the project by installing our gems with `bundle install` and creating, migrating, and seeding our databse with `rails db:create`, `rails db:migrate`, and `rails db:seed` respectively. 
 
 
 ## Part 2: Docker Introduction 
@@ -76,11 +76,11 @@ In this diagram, Docker is the container engine in blue.
    
 	Note that we are now specifying the `p` flag which binds the container's 	port 3000 to our local machine's port 3000. Our container will run our Rails 	application on port 3000 and we want to be able to access it from our local 	machine. We also specify the `d` flag to run our container in "detatched 	mode" or in the background.
    
-8. Now verify that you can visit the application on your local computer at port 3000. Visit the authors page and add some entries.
+8. Now verify that you can visit the application on your local computer at port 3000. Visit the publishers page and add some entries.
 
 9. Stop the container instance and create another using the `docker build` command like before 
 
-10. Navigate to the books page and add some books for our authors made in the previous step
+10. Navigate to the books page and add some books for our publishers made in the previous step (Hint: This step is supposed to trick you)
 
 
 ### Persisting our Database
@@ -115,7 +115,7 @@ In the last section, we used a named volume to persist our database between cont
 
 Docker containers can be configured with three different types of mounts. The main difference between bind mounts and volumes is that the user can specify the location of the filesystem on the local computer with a bind mount. tmpfs mounts are for linux users only and allow for the container to create files outside the container's writable layer. 
 
-1. Lets create another instance of our container, but this time instead of using our volume we will bind our working directory on our local machine to the working directory of the Docker container. From the root of our app run:
+1. Let's create another instance of our container, but this time instead of using our volume we will bind our working directory on our local machine to the working directory of the Docker container. From the root of our app run:
 
 	```
 	docker run --name bookmanager -dp 3000:3000 \
@@ -199,7 +199,8 @@ We will now create two containers for our database and frontend respectively.
 	-dp 3000:3000 -v "$(pwd):/BookManager" --rm bookmanager
 	```
 6. Verify that there are two containers running our images with the `docker ps` command or in the Docker dashboard.
-7. If this is the first time running our app, our database will need to be created. This can be done by entering the command line in our PostgreSQL container or by going to the command line for our rails app. Go to the CLI of the Rails app through the dashboard or with the command `docker exec -it bookmanager_web /bin/bash` to run our container in the foreground and then run `/bin/bash -l -c "bundle exec rails db:migrate:reset"` to set up our database.
+
+7. Visit our web app. If this is the first time running our app, our database will need to be created. This can be done in multiple ways. Go to the CLI for our web app from the dashboard and run `/bin/bash -l -c "bundle exec rails db:reset"`. Verify our web app functions as expected.
 
 
 ### Docker Compose 

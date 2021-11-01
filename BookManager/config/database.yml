@@ -23,3 +23,23 @@ test:
 production:
   <<: *default
   database: db/production.sqlite3
+
+# default: &default
+#     adapter: postgresql
+#     encoding: unicode
+#     host: db
+#     username: postgres
+#     password: secret
+#     pool: 5
+
+# development:
+#     <<: *default
+#     database: bookmanager_development
+
+# test:
+#     <<: *default
+#     database: bookmanager_test
+
+# production:
+#     <<: *default
+#     database: bookmanager_production

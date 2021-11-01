@@ -14,6 +14,7 @@
     <% @publishers.each do |publisher| %>
       <tr>
         <td><%= publisher.name %></td>
+        <td><%= link_to 'Show', publisher %></td>
         <td><%= link_to 'Edit', edit_publisher_path(publisher) %></td>
         <td><%= link_to 'Destroy', publisher, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
