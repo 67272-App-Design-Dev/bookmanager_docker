@@ -1,5 +1,5 @@
 
-# Docker Lab
+# BookManager Docker Lab Instructions
 
 ## Part 1: Setup
 
