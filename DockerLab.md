@@ -1,4 +1,6 @@
 
+# Docker Lab
+
 ## Part 1: Setup
 
 1. Install Docker Desktop on your local machine by following the instructions for your respective operating system [here](https://docs.docker.com/get-docker/).
