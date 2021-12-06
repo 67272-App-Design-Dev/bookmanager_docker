@@ -1,0 +1,87 @@
+D, [2021-12-06T13:58:36.027642 #90480] DEBUG -- :   [1m[35m (70.6ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" character varying NOT NULL PRIMARY KEY)[0m
+D, [2021-12-06T13:58:36.090503 #90480] DEBUG -- :   [1m[35m (39.3ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" character varying NOT NULL PRIMARY KEY, "value" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+D, [2021-12-06T13:58:36.125672 #90480] DEBUG -- :   [1m[35m (15.3ms)[0m  [1m[34mSELECT pg_try_advisory_lock(5883763111492858935)[0m
+D, [2021-12-06T13:58:36.228506 #90480] DEBUG -- :   [1m[35m (16.6ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+I, [2021-12-06T13:58:36.234772 #90480]  INFO -- : Migrating to CreateBooks (20170912030006)
+D, [2021-12-06T13:58:36.255637 #90480] DEBUG -- :   [1m[35m (15.2ms)[0m  [1m[35mBEGIN[0m
+D, [2021-12-06T13:58:36.302621 #90480] DEBUG -- :   [1m[35m (44.5ms)[0m  [1m[35mCREATE TABLE "books" ("id" serial NOT NULL PRIMARY KEY, "title" character varying, "publisher_id" integer, "proposal_date" date, "contract_date" date, "published_date" date, "units_sold" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+D, [2021-12-06T13:58:36.342792 #90480] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (19.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170912030006"]]
+D, [2021-12-06T13:58:36.361241 #90480] DEBUG -- :   [1m[35m (18.0ms)[0m  [1m[35mCOMMIT[0m
+I, [2021-12-06T13:58:36.361419 #90480]  INFO -- : Migrating to CreatePublishers (20170912030020)
+D, [2021-12-06T13:58:36.377731 #90480] DEBUG -- :   [1m[35m (15.3ms)[0m  [1m[35mBEGIN[0m
+D, [2021-12-06T13:58:36.465246 #90480] DEBUG -- :   [1m[35m (69.8ms)[0m  [1m[35mCREATE TABLE "publishers" ("id" serial NOT NULL PRIMARY KEY, "name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+D, [2021-12-06T13:58:36.482331 #90480] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (15.5ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170912030020"]]
+D, [2021-12-06T13:58:36.500855 #90480] DEBUG -- :   [1m[35m (18.1ms)[0m  [1m[35mCOMMIT[0m
+I, [2021-12-06T13:58:36.501086 #90480]  INFO -- : Migrating to CreateAuthors (20170912030043)
+D, [2021-12-06T13:58:36.520851 #90480] DEBUG -- :   [1m[35m (18.4ms)[0m  [1m[35mBEGIN[0m
+D, [2021-12-06T13:58:36.580757 #90480] DEBUG -- :   [1m[35m (58.8ms)[0m  [1m[35mCREATE TABLE "authors" ("id" serial NOT NULL PRIMARY KEY, "first_name" character varying, "last_name" character varying, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+D, [2021-12-06T13:58:36.597397 #90480] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (15.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170912030043"]]
+D, [2021-12-06T13:58:36.617408 #90480] DEBUG -- :   [1m[35m (19.7ms)[0m  [1m[35mCOMMIT[0m
+I, [2021-12-06T13:58:36.617569 #90480]  INFO -- : Migrating to CreateBookAuthors (20170912030110)
+D, [2021-12-06T13:58:36.636804 #90480] DEBUG -- :   [1m[35m (17.9ms)[0m  [1m[35mBEGIN[0m
+D, [2021-12-06T13:58:36.669980 #90480] DEBUG -- :   [1m[35m (32.4ms)[0m  [1m[35mCREATE TABLE "book_authors" ("id" serial NOT NULL PRIMARY KEY, "book_id" integer, "author_id" integer, "created_at" timestamp NOT NULL, "updated_at" timestamp NOT NULL)[0m
+D, [2021-12-06T13:58:36.686298 #90480] DEBUG -- :   [1m[36mActiveRecord::SchemaMigration Create (15.4ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES ($1) RETURNING "version"[0m  [["version", "20170912030110"]]
+D, [2021-12-06T13:58:36.705209 #90480] DEBUG -- :   [1m[35m (18.6ms)[0m  [1m[35mCOMMIT[0m
+D, [2021-12-06T13:58:36.784984 #90480] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Load (16.6ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = $1 LIMIT $2[0m  [["key", "environment"], ["LIMIT", 1]]
+D, [2021-12-06T13:58:36.823875 #90480] DEBUG -- :   [1m[35m (15.6ms)[0m  [1m[35mBEGIN[0m
+D, [2021-12-06T13:58:36.842070 #90480] DEBUG -- :   [1m[36mActiveRecord::InternalMetadata Create (16.6ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES ($1, $2, $3, $4) RETURNING "key"[0m  [["key", "environment"], ["value", "production"], ["created_at", "2021-12-06 18:58:36.824410"], ["updated_at", "2021-12-06 18:58:36.824410"]]
+D, [2021-12-06T13:58:36.860126 #90480] DEBUG -- :   [1m[35m (17.5ms)[0m  [1m[35mCOMMIT[0m
+D, [2021-12-06T13:58:36.878354 #90480] DEBUG -- :   [1m[35m (18.0ms)[0m  [1m[34mSELECT pg_advisory_unlock(5883763111492858935)[0m
+I, [2021-12-06T13:59:55.100871 #90668]  INFO -- : [2c893827-759e-4717-9d68-c42f02b5040d] Started GET "/" for 127.0.0.1 at 2021-12-06 13:59:55 -0500
+F, [2021-12-06T13:59:55.101762 #90668] FATAL -- : [2c893827-759e-4717-9d68-c42f02b5040d]   
+F, [2021-12-06T13:59:55.101820 #90668] FATAL -- : [2c893827-759e-4717-9d68-c42f02b5040d] ActionController::RoutingError (No route matches [GET] "/"):
+F, [2021-12-06T13:59:55.101850 #90668] FATAL -- : [2c893827-759e-4717-9d68-c42f02b5040d]   
+F, [2021-12-06T13:59:55.101887 #90668] FATAL -- : [2c893827-759e-4717-9d68-c42f02b5040d] actionpack (5.2.4.4) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] actionpack (5.2.4.4) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] railties (5.2.4.4) lib/rails/rack/logger.rb:38:in `call_app'
+[2c893827-759e-4717-9d68-c42f02b5040d] railties (5.2.4.4) lib/rails/rack/logger.rb:26:in `block in call'
+[2c893827-759e-4717-9d68-c42f02b5040d] activesupport (5.2.4.4) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+[2c893827-759e-4717-9d68-c42f02b5040d] activesupport (5.2.4.4) lib/active_support/tagged_logging.rb:28:in `tagged'
+[2c893827-759e-4717-9d68-c42f02b5040d] activesupport (5.2.4.4) lib/active_support/tagged_logging.rb:71:in `tagged'
+[2c893827-759e-4717-9d68-c42f02b5040d] railties (5.2.4.4) lib/rails/rack/logger.rb:26:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] actionpack (5.2.4.4) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] actionpack (5.2.4.4) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] rack (2.2.3) lib/rack/method_override.rb:24:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] rack (2.2.3) lib/rack/runtime.rb:22:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] activesupport (5.2.4.4) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] actionpack (5.2.4.4) lib/action_dispatch/middleware/executor.rb:14:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] actionpack (5.2.4.4) lib/action_dispatch/middleware/static.rb:127:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] rack (2.2.3) lib/rack/sendfile.rb:110:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] railties (5.2.4.4) lib/rails/engine.rb:524:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] puma (3.12.6) lib/puma/configuration.rb:227:in `call'
+[2c893827-759e-4717-9d68-c42f02b5040d] puma (3.12.6) lib/puma/server.rb:706:in `handle_request'
+[2c893827-759e-4717-9d68-c42f02b5040d] puma (3.12.6) lib/puma/server.rb:476:in `process_client'
+[2c893827-759e-4717-9d68-c42f02b5040d] puma (3.12.6) lib/puma/server.rb:334:in `block in run'
+[2c893827-759e-4717-9d68-c42f02b5040d] puma (3.12.6) lib/puma/thread_pool.rb:135:in `block in spawn_thread'
+I, [2021-12-06T13:59:58.841982 #90668]  INFO -- : [024ef817-7384-477c-949a-36dd31a32e06] Started GET "/" for 127.0.0.1 at 2021-12-06 13:59:58 -0500
+F, [2021-12-06T13:59:58.842497 #90668] FATAL -- : [024ef817-7384-477c-949a-36dd31a32e06]   
+F, [2021-12-06T13:59:58.842546 #90668] FATAL -- : [024ef817-7384-477c-949a-36dd31a32e06] ActionController::RoutingError (No route matches [GET] "/"):
+F, [2021-12-06T13:59:58.842640 #90668] FATAL -- : [024ef817-7384-477c-949a-36dd31a32e06]   
+F, [2021-12-06T13:59:58.842680 #90668] FATAL -- : [024ef817-7384-477c-949a-36dd31a32e06] actionpack (5.2.4.4) lib/action_dispatch/middleware/debug_exceptions.rb:65:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] actionpack (5.2.4.4) lib/action_dispatch/middleware/show_exceptions.rb:33:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] railties (5.2.4.4) lib/rails/rack/logger.rb:38:in `call_app'
+[024ef817-7384-477c-949a-36dd31a32e06] railties (5.2.4.4) lib/rails/rack/logger.rb:26:in `block in call'
+[024ef817-7384-477c-949a-36dd31a32e06] activesupport (5.2.4.4) lib/active_support/tagged_logging.rb:71:in `block in tagged'
+[024ef817-7384-477c-949a-36dd31a32e06] activesupport (5.2.4.4) lib/active_support/tagged_logging.rb:28:in `tagged'
+[024ef817-7384-477c-949a-36dd31a32e06] activesupport (5.2.4.4) lib/active_support/tagged_logging.rb:71:in `tagged'
+[024ef817-7384-477c-949a-36dd31a32e06] railties (5.2.4.4) lib/rails/rack/logger.rb:26:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] actionpack (5.2.4.4) lib/action_dispatch/middleware/remote_ip.rb:81:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] actionpack (5.2.4.4) lib/action_dispatch/middleware/request_id.rb:27:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] rack (2.2.3) lib/rack/method_override.rb:24:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] rack (2.2.3) lib/rack/runtime.rb:22:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] activesupport (5.2.4.4) lib/active_support/cache/strategy/local_cache_middleware.rb:29:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] actionpack (5.2.4.4) lib/action_dispatch/middleware/executor.rb:14:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] actionpack (5.2.4.4) lib/action_dispatch/middleware/static.rb:127:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] rack (2.2.3) lib/rack/sendfile.rb:110:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] railties (5.2.4.4) lib/rails/engine.rb:524:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] puma (3.12.6) lib/puma/configuration.rb:227:in `call'
+[024ef817-7384-477c-949a-36dd31a32e06] puma (3.12.6) lib/puma/server.rb:706:in `handle_request'
+[024ef817-7384-477c-949a-36dd31a32e06] puma (3.12.6) lib/puma/server.rb:476:in `process_client'
+[024ef817-7384-477c-949a-36dd31a32e06] puma (3.12.6) lib/puma/server.rb:334:in `block in run'
+[024ef817-7384-477c-949a-36dd31a32e06] puma (3.12.6) lib/puma/thread_pool.rb:135:in `block in spawn_thread'
+I, [2021-12-06T13:59:59.406029 #90668]  INFO -- : [0ae84205-f7ce-465f-ad38-724da97ffefe] Started GET "/authors" for 127.0.0.1 at 2021-12-06 13:59:59 -0500
+I, [2021-12-06T13:59:59.406787 #90668]  INFO -- : [0ae84205-f7ce-465f-ad38-724da97ffefe] Processing by AuthorsController#index as HTML
+I, [2021-12-06T13:59:59.431880 #90668]  INFO -- : [0ae84205-f7ce-465f-ad38-724da97ffefe]   Rendering authors/index.html.erb within layouts/application
+D, [2021-12-06T14:00:00.041469 #90668] DEBUG -- : [0ae84205-f7ce-465f-ad38-724da97ffefe]   [1m[36mAuthor Load (16.0ms)[0m  [1m[34mSELECT "authors".* FROM "authors"[0m
+I, [2021-12-06T14:00:00.090973 #90668]  INFO -- : [0ae84205-f7ce-465f-ad38-724da97ffefe]   Rendered authors/index.html.erb within layouts/application (658.9ms)
+I, [2021-12-06T14:00:00.093064 #90668]  INFO -- : [0ae84205-f7ce-465f-ad38-724da97ffefe] Completed 200 OK in 686ms (Views: 663.5ms | ActiveRecord: 163.2ms)
