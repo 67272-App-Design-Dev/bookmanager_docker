@@ -1,6 +1,10 @@
-# Book Manager ByeBug Teaching Session
+# Book Manager Docker Lab
 
-There is a rails 5 application [BookManager - ByeBug]. It has some code that I added that breaks the application. Run bundle install and rails db:migrate to set it up first. You will work through with the class and figure out how to fix the application. The following are the bugs:
+This code was originally carried over from the Byebug teaching exercise.  The original README contents are left here below.
+
+# Book Manager Byebug Teaching Exercise
+
+There is a rails 5 application [BookManager - ByeBug]. It has some code that were added that breaks the application. Run bundle install and rails db:migrate to set it up first. You will work through with the class and figure out how to fix the application. The following are the bugs:
 
 ## Books won’t display properly
 
