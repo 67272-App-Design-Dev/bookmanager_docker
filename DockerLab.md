@@ -1,12 +1,18 @@
+## Objectives
 
-# BookManager Docker Lab Instructions
+* Learn how to build a Docker image and launch a container 
+* Learn how to persist our database between instances of containers 
+* Be able to separate the database and frontend of our app into different containers 
+* Understand how to use `docker-compose` to quickly deploy all the containers for all of the services of our app
+
+
 
 ## Part 1: Setup
 
 1. Install Docker Desktop on your local machine by following the instructions for your respective operating system [here](https://docs.docker.com/get-docker/).
-2. Install PostgreSQL if you do not already have it [here](https://www.postgresql.org/download/)
-3. Clone the starting [repository](https://github.com/67272-App-Design-Dev/bookmanager_docker.git)
-4. Set up the project by installing our gems with `bundle install` and creating, migrating, and seeding our databse with `rails db:create`, `rails db:migrate`, and `rails db:seed` respectively. 
+2. Install PostgreSQL if you do not already have it [here for Mac users](https://postgresapp.com/) and [here for others](https://www.postgresql.org/download/)
+3. Clone the Rails project [BookManager for Docker](https://github.com/67272-App-Design-Dev/bookmanager_docker) 
+4. Set up the project by installing our gems with `bundle install` and creating, migrating, and seeding our databse with `rails db:create`, `rails db:migrate`, and `rails db:seed` respectively.
 
 
 ## Part 2: Docker Introduction 
